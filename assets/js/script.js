@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", function(){
             li.textContent = taskText;
             taskList.appendChild(li);
             taskInput.value = ''; 
+
+            // Save tasks to local storage
+            // Retrieve tasks from local storage or initialize an empy array
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            // Add new tasks to the tasks array
+            tasks.push(taskText);
+            // Save the updated tasks array
+            localStorage.setItem('tasks', JSON.stringify(tasks));
         }
     }
 
@@ -20,5 +28,17 @@ document.addEventListener("DOMContentLoaded", function(){
         if(event.key === 'Enter'){
             addTask();
         };
-    })
+    });
+
+    function LoadFromLocalStorage(){
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.forEach(function(task){
+            const li = document.createElement('li');
+            li.textContent = task;
+            taskList.appendChild(li);
+        });
+    }
+
+    // Load tasks from local storage
+    LoadFromLocalStorage();
 })
