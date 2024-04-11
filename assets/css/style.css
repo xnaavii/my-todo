@@ -35,6 +35,7 @@ h2 {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    transition: 1s ease;
 }
 
 #taskList li {
@@ -50,8 +51,12 @@ h2 {
     color: #ffffff;
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
     align-items: center;
+    transition: 1s ease;
 }
 
+.done{
+    text-decoration: line-through;
+}
 
 button{
     cursor: pointer;

@@ -3,10 +3,10 @@ document.addEventListener("DOMContentLoaded", function(){
     const addBtn = document.getElementById("addTask");
     const taskList = document.getElementById("taskList");
 
-    function addTask(event){
+    function addTask(){
         const taskText = taskInput.value.trim()
         // If input box is not empty then append a new li element
-        if(taskInput !== ''){
+        if(taskText !== ''){
             const li = document.createElement('li');
             li.textContent = taskText;
             taskList.appendChild(li);
@@ -22,8 +22,18 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
+    function removeTask(event){
+        const li = event.target.parentElement;
+        const index = Array.from(li.parentNode.children).indexOf(li);
+        li.remove();
+        // Remove task from local storage
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.splice(index, 1);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
     // Event listener for add button
-    // addBtn.addEventListener('click', addTask); 
+    addBtn.addEventListener('click', addTask); 
     taskInput.addEventListener('keypress', function(event){
         if(event.key === 'Enter'){
             addTask();
@@ -41,4 +51,24 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Load tasks from local storage
     LoadFromLocalStorage();
+
+    taskList.addEventListener('click', function(event){
+        const target = event.target;
+        if (target.tagName === "LI"){
+            target.classList.toggle('done');
+            if (target.classList.contains('done')){
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '-';
+                removeBtn.classList.add('removeTask');
+                target.appendChild(removeBtn);
+            } else {
+                const removeBtn = document.querySelector('.removeTask');
+                if (removeBtn){
+                    removeBtn.remove();
+                }
+            }
+        } else if (target.classList.contains('removeTask')){
+            removeTask(event);
+        }
+    })
 })
